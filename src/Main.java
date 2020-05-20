@@ -1,34 +1,38 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Scanner;
 public class Main{
     public static void main(String a[]){
+        boolean out = false;
         TupleSpace ts = new TupleSpace();
-
-//List methods are synchronized
-        Tuple tuple1 = new Tuple("test1", "0");
-        Tuple tuple2 = new Tuple("test2", "0");
-        Tuple tuple3 = new Tuple("test3", "0");
-        Tuple tuple4 = new Tuple("test4", "0");
-        TestThread1 t1 = new TestThread1("t1", ts);
-        TestThread2 t2 = new TestThread2("t2", ts);
-        TestThread3 t3 = new TestThread3("t3", ts);
-        TestThread4 t4 = new TestThread4("t4", ts);
-        t1.load(tuple1, tuple2);
-        t2.load(tuple2, tuple3);
-        t3.load(tuple3, tuple4);
-        t4.load(tuple4, tuple1);
-        t4.start();
-        t3.start();
-        t2.start();
-        t1.start();
+        Scanner sc2 = new Scanner(System.in);
 
 
-        ts.add(tuple1);
+        while(!out){
+            Scanner sc1 = new Scanner(System.in);
+            dispayMenu();
+            int response = sc1.nextInt();
+            switch (response){
+                case 1:
+                    TupleSpace fs = new TupleSpace();
+                    Fabricant f = new Fabricant("fab1", ts, fs);
+                    f.start();
+                    break;
+                case 2:
+                    ts.add("Appel", "50");
+                    System.out.println("création appel d'offre");
+                    break;
+                case 9:
+                    System.out.println("aurevoir");
+                    out = true;
+                    break;
+                default:
+                    System.out.println("choix non répertoirié");
+            }
 
-//Use explicit synchronization while iterating
-
-
+        }
+    }
+    public static void dispayMenu(){
+        System.out.println("1 :  Creer fabricant");
+        System.out.println("2 :  Creer appel d'offre");
+        System.out.println("9 :  Sortir");
     }
 }

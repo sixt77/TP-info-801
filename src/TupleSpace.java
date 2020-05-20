@@ -29,10 +29,19 @@ public class TupleSpace {
     }
     public boolean contains(String name){
         boolean find = false;
-        for(Tuple elt : this.list){
-            if(elt.name.equals(name))find = true;
+
+        for(int i = 0; i < this.list.size(); i++){
+            if(this.list.get(i).name.equals(name))find = true;
         }
         return find;
+    }
+
+    public String getTupleValue(String name){
+        String result = "";
+        for(Tuple elt : this.list){
+            if(elt.name.equals(name))result = elt.value;
+        }
+        return result;
     }
 
     public void remove(Tuple t1){
@@ -49,6 +58,15 @@ public class TupleSpace {
     }
     public void release(){
         this.free = true;
+    }
+    public void waitTS(){
+        while(!this.free){
+            try {
+                wait(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
