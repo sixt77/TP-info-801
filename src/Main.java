@@ -3,21 +3,23 @@ public class Main{
     public static void main(String a[]){
         boolean out = false;
         TupleSpace ts = new TupleSpace();
-        Scanner sc2 = new Scanner(System.in);
-
+        Scanner sc1 = new Scanner(System.in);
 
         while(!out){
-            Scanner sc1 = new Scanner(System.in);
             dispayMenu();
             int response = sc1.nextInt();
             switch (response){
                 case 1:
                     TupleSpace fs = new TupleSpace();
-                    Fabricant f = new Fabricant("fab1", ts, fs);
+                    Logistics f = new Logistics("fab1", ts, fs);
+                    Design d = new Design("fab1-Design", fs);
+                    Workshop w = new Workshop("fab1-Workshop", fs, 1);
                     f.start();
+                    d.start();
+                    w.start();
                     break;
                 case 2:
-                    ts.add("Appel", "50");
+                    ts.add("AppelOffre", "50");
                     System.out.println("création appel d'offre");
                     break;
                 case 9:

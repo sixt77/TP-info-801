@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class TupleSpace {
-    private List<Tuple> list;
+    public List<Tuple> list;
     public boolean free;
     public TupleSpace(){
         {
@@ -29,7 +29,6 @@ public class TupleSpace {
     }
     public boolean contains(String name){
         boolean find = false;
-
         for(int i = 0; i < this.list.size(); i++){
             if(this.list.get(i).name.equals(name))find = true;
         }
@@ -61,11 +60,7 @@ public class TupleSpace {
     }
     public void waitTS(){
         while(!this.free){
-            try {
-                wait(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
