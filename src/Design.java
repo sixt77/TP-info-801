@@ -2,11 +2,11 @@ import java.util.ArrayList;
 
 public class Design extends Thread {
     String name;
-    TupleSpace ls;
+    TupleSpace ws;
     ArrayList<String> treated;
-    public Design(String name, TupleSpace fs){
+    public Design(String name, TupleSpace ws){
         this.name = name;
-        this.ls = fs;
+        this.ws = ws;
         this.treated = new ArrayList<String>();
         System.out.println("bureau d'étude créé avec id :"+name);
     }
@@ -15,14 +15,20 @@ public class Design extends Thread {
     public void run() {
         String TupleID;
         while(1 == 1){
-            if(ls.contains("CostRequest") && !treated.contains(ls.getTupleValue("CostRequest"))){
-                ls.waitTS();
-                ls.capture();
-                TupleID = ls.getTupleValue("CostRequest");
-                System.out.println("renvoi de cost request, id :"+TupleID);
-                ls.add("CostResponse", "200");
-                treated.add(TupleID);
-                ls.release();
+            if(ws.capture(this.name)){
+                if(ws.contains("CostRequest") && !treated.contains(ws.getTupleValue("CostRequest"))){
+                    TupleID = ws.getTupleValue("CostRequest");
+                    //System.out.println("renvoi de cost request, id :"+TupleID);
+                    ws.add("CostResponse", "200");
+                    treated.add(TupleID);
+                }
+                ws.release();
+            }else{
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

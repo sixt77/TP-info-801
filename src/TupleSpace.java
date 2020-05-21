@@ -4,11 +4,13 @@ import java.util.List;
 
 public class TupleSpace {
     public List<Tuple> list;
-    public boolean free;
+    public boolean  free;
+    public String lastProc;
     public TupleSpace(){
         {
             this.list = Collections.synchronizedList(new ArrayList<Tuple>());
             this.free = true;
+            this.lastProc = "";
         }
     }
 
@@ -52,15 +54,27 @@ public class TupleSpace {
             if(elt.name.equals(name))this.list.remove(elt);
         }
     }
-    public void capture(){
-        this.free = false;
+    public synchronized boolean capture(String name){
+        if(this.free && !this.lastProc.equals(name)){
+            this.free = false;
+            this.lastProc = name;
+            return true;
+        }else{
+            return false;
+        }
+
     }
-    public void release(){
+    public synchronized void release(){
         this.free = true;
     }
-    public void waitTS(){
-        while(!this.free){
-
+    public void printTS(){
+        this.list.stream().forEach(elt-> {
+            System.out.println("nom : "+elt.name+", value : "+elt.value);
+        });
+    }
+    public void printTSasList(){
+        for(int i = 0; i < this.list.size(); i++){
+            System.out.println((i+1)+" : "+this.list.get(i).value);
         }
     }
 

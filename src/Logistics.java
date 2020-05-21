@@ -3,12 +3,12 @@ import java.util.ArrayList;
 public class Logistics extends Thread {
     String name;
     TupleSpace ts;
-    TupleSpace ls;
+    TupleSpace ws;
     ArrayList<String> treated;
-    public Logistics(String name, TupleSpace ts, TupleSpace fs){
+    public Logistics(String name, TupleSpace ts, TupleSpace ws){
         this.name = name;
         this.ts = ts;
-        this.ls = fs;
+        this.ws = ws;
         this.treated = new ArrayList<String>();
         System.out.println("fabricant créé avec id :"+name);
     }
@@ -17,24 +17,36 @@ public class Logistics extends Thread {
     public void run() {
         String TupleID;
         while(1 == 1){
-            if(ts.contains("AppelOffre") && !treated.contains(ts.getTupleValue("AppelOffre"))  && !ls.contains("CostRequest") && !ls.contains("RequirementRequest")){
-                ts.waitTS();
-                ts.capture();
-                TupleID = ts.getTupleValue("AppelOffre");
-                ls.add("CostRequest", TupleID);
-                ls.add("RequirementRequest", TupleID);
-                System.out.println("Appel d'offre reçu, id :"+TupleID);
-                treated.add(TupleID);
-                ts.release();
+            if(ws.capture(this.name)){
+                if(ts.contains("AppelOffre") && !treated.contains(ts.getTupleValue("AppelOffre"))  && !ws.contains("CostRequest") && !ws.contains("RequirementRequest")){
+                    TupleID = ts.getTupleValue("AppelOffre");
+                    ws.add("CostRequest", TupleID);
+                    ws.add("RequirementRequest", TupleID);
+                    //System.out.println("Appel d'offre reçu, id :"+TupleID);
+                    treated.add(TupleID);
+
+                }
+
+                if(ws.contains("RequirementResponse") && ws.contains("CostResponse")){
+                    ws.capture(this.name);
+                    if(ws.getTupleValue("RequirementResponse").equals("true")){
+                        ts.add("ContreOffre", this.name+"|"+ws.getTupleValue("RequirementResponse"));
+                    }
+                    //ts.add(ws.getTupleValue("RequirementResponse"));
+                    System.out.println("réponse transmise");
+                    ws.list.clear();
+                    ws.release();
+                }
+                ws.release();
+            }else{
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
-            if(ls.contains("RequirementResponse") && ls.contains("CostResponse")){
-                ls.waitTS();
-                ls.capture();
-                System.out.println("reponse transmie");
-                ls.release();
-                ls = new TupleSpace();
-            }
+
         }
     }
 

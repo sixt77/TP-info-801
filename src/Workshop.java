@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class Workshop extends Thread {
     String name;
-    TupleSpace ls;
+    TupleSpace ws;
     int manage;
     ArrayList<String> treated;
-    public Workshop(String name, TupleSpace fs, int manage){
+    public Workshop(String name, TupleSpace ws, int manage){
         this.name = name;
-        this.ls = fs;
+        this.ws = ws;
         this.manage = manage;
         this.treated = new ArrayList<String>();
         System.out.println("l'atelier créé avec id :"+name);
@@ -16,17 +16,23 @@ public class Workshop extends Thread {
 
     public void run() {
         String TupleID;
-        while(1 == 1){
-            if(ls.contains("RequirementRequest") && !treated.contains(ls.getTupleValue("RequirementRequest"))){
-                ls.waitTS();
-                ls.capture();
-                TupleID = ls.getTupleValue("RequirementRequest");
-                System.out.println("renvoi de Requirement, id :"+TupleID);
-                ls.add("RequirementResponse", "true");
-                treated.add(TupleID);
-                ls.release();
+        while (1 == 1) {
+            if (ws.capture(this.name)) {
+                if (ws.contains("RequirementRequest") && !treated.contains(ws.getTupleValue("RequirementRequest"))) {
+                    TupleID = ws.getTupleValue("RequirementRequest");
+                    //System.out.println("renvoi de Requirement, id :"+TupleID);
+                    ws.add("RequirementResponse", "true");
+                    treated.add(TupleID);
+                }
+                ws.release();
+            } else {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
-
 }
