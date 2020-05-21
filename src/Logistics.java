@@ -8,9 +8,11 @@ public class Logistics extends Thread {
     public Logistics(String name, TupleSpace ts, TupleSpace ws){
         this.name = name;
         this.ts = ts;
+        ts.addProc();
         this.ws = ws;
+        ws.addProc();
         this.treated = new ArrayList<String>();
-        System.out.println("fabricant créé avec id :"+name);
+        System.out.println("fabricant créé avec id : "+name);
     }
 
 
@@ -30,7 +32,7 @@ public class Logistics extends Thread {
                 if(ws.contains("RequirementResponse") && ws.contains("CostResponse")){
                     ws.capture(this.name);
                     if(ws.getTupleValue("RequirementResponse").equals("true")){
-                        ts.add("ContreOffre", this.name+"|"+ws.getTupleValue("RequirementResponse"));
+                        ts.add("ContreOffre", this.name+"|"+ws.getTupleValue("RequirementResponse")+"|"+ws.getTupleValue("CostResponse"));
                     }
                     //ts.add(ws.getTupleValue("RequirementResponse"));
                     System.out.println("réponse transmise");

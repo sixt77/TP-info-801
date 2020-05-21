@@ -7,8 +7,9 @@ public class Design extends Thread {
     public Design(String name, TupleSpace ws){
         this.name = name;
         this.ws = ws;
+        ws.addProc();
         this.treated = new ArrayList<String>();
-        System.out.println("bureau d'étude créé avec id :"+name);
+        System.out.println("bureau d'étude créé avec id : "+name);
     }
 
 
@@ -19,7 +20,7 @@ public class Design extends Thread {
                 if(ws.contains("CostRequest") && !treated.contains(ws.getTupleValue("CostRequest"))){
                     TupleID = ws.getTupleValue("CostRequest");
                     //System.out.println("renvoi de cost request, id :"+TupleID);
-                    ws.add("CostResponse", "200");
+                    ws.add("CostResponse",  Integer.toString((int) (Math.random() * 200)));
                     treated.add(TupleID);
                 }
                 ws.release();

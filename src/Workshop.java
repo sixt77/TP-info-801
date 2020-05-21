@@ -8,9 +8,10 @@ public class Workshop extends Thread {
     public Workshop(String name, TupleSpace ws, int manage){
         this.name = name;
         this.ws = ws;
+        ws.addProc();
         this.manage = manage;
         this.treated = new ArrayList<String>();
-        System.out.println("l'atelier créé avec id :"+name);
+        System.out.println("l'atelier créé avec id : "+name);
     }
 
 
