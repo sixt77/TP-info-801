@@ -13,7 +13,7 @@ public class Main{
         Scanner sc4 = new Scanner(System.in);
         Scanner sc5 = new Scanner(System.in);
         Scanner sc6 = new Scanner(System.in);
-
+        Ticket commande = new Ticket();
         int response;
         String responseStr;
         while(!out){
@@ -80,18 +80,21 @@ public class Main{
 
                 }else{
                     System.out.println("validation du choix : "+response);
-                    //enregistrement rep
+                    commande.logistics = ts.list.get(response);
                     ts.list.clear();
 
                     waiting = false;
                     //gestion fournisseur
                     System.out.println("choix du fournisseur");
-                    Tuple test = tt.sendMessage("fournisseurOffre", "1");
-                    System.out.println(test.value);
+                    Tuple supplierTuple = tt.sendMessage("fournisseurOffre", "1");
+                    System.out.println(supplierTuple.value);
+                    commande.supplier = supplierTuple;
                     //gestion transporteur
                     System.out.println("choix du transporteur");
-                    Tuple test2 = cs.sendMessage("transportOffre", "1");
-                    System.out.println(test2.value);
+                    Tuple transportTuple = cs.sendMessage("transportOffre", "1");
+                    System.out.println(transportTuple.value);
+                    commande.transport = transportTuple;
+                    commande.print();
                 }
                 ts.release();
 
