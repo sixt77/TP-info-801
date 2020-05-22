@@ -66,6 +66,11 @@ public class Main{
                 ts.printTSasList();
                 System.out.println("selectionnez le numéro de la proposition choisit (O) pour relancer l'offre");
                 response = sc3.nextInt();
+                while(response < 0 || response > ts.list.size()-1){
+                    System.out.println("erreur selection impossible");
+                    System.out.println("selectionnez le numéro de la proposition choisit");
+                    response = sc3.nextInt();
+                }
 
                 if(response == 0){
                     ts.list.clear();
@@ -79,16 +84,17 @@ public class Main{
                     ts.list.clear();
 
                     waiting = false;
+                    //gestion fournisseur
+                    System.out.println("choix du fournisseur");
+                    Tuple test = tt.sendMessage("fournisseurOffre", "1");
+                    System.out.println(test.value);
+                    //gestion transporteur
+                    System.out.println("choix du transporteur");
+                    Tuple test2 = cs.sendMessage("transportOffre", "1");
+                    System.out.println(test2.value);
                 }
                 ts.release();
-                //gestion fournisseur
-                System.out.println("choix du fournisseur");
-                Tuple test = tt.sendMessage("fournisseurOffre", "1");
-                System.out.println(test.value);
-                //gestion transporteur
-                System.out.println("choix du transporteur");
-                Tuple test2 = cs.sendMessage("transportOffre", "1");
-                System.out.println(test2.value);
+
 
             }
         }

@@ -76,31 +76,21 @@ public class TupleSpace {
         });
     }
     public void printTSasList(){
+        int j = 0;
         for(int i = 0; i < this.list.size(); i++){
-            System.out.println((i+1)+" : "+this.list.get(i).value);
+            if(!this.list.get(i).name.equals("AppelOffre") && !this.list.get(i).name.equals("fournisseurOffre") && !this.list.get(i).name.equals("transportOffre")){
+                System.out.println((j+1)+" : "+this.list.get(i).value);
+                j++;
+            }
+
         }
     }
     public void addProc(){
         this.nbProc++;
     }
-    public void sendMessage(Tuple tuple){
-        Scanner sc1 = new Scanner(System.in);
-        Scanner sc2 = new Scanner(System.in);
-        this.add(tuple);
-        System.out.println("en attente de réponses, appuyer sur S pour stopper la recherche");
-        while(!sc1.nextLine().equals("S")){
 
-        }
-        this.capture("main");
-        this.printTSasList();
-        System.out.println("selectionnez le numéro de la proposition choisit (O) pour relancer l'offre");
-        //this = sc2.nextInt();
-        this.list.clear();
-        this.release();
-    }
     public Tuple sendMessage(String str1, String str2){
         Scanner sc1 = new Scanner(System.in);
-        Scanner sc2 = new Scanner(System.in);
         this.add(new Tuple(str1, str2));
         System.out.println("en attente de réponses, appuyer sur S pour stopper la recherche");
         while(!sc1.nextLine().equals("S")){
@@ -108,11 +98,22 @@ public class TupleSpace {
         }
         this.capture("main");
         this.printTSasList();
-        System.out.println("selectionnez le numéro de la proposition choisit (O) pour relancer l'offre");
-        Tuple sav = this.list.get(sc2.nextInt()-1);
+        Tuple sav = this.safeGet();
         this.list.clear();
         this.release();
         return sav;
+    }
+    public Tuple safeGet(){
+        Scanner sc1 = new Scanner(System.in);
+        System.out.println("selectionnez le numéro de la proposition choisit");
+        int id = sc1.nextInt();
+        while(id < 0 || id > this.list.size()-1){
+            System.out.println("erreur selection impossible");
+            System.out.println("selectionnez le numéro de la proposition choisit");
+            id = sc1.nextInt();
+        }
+
+        return this.list.get(id);
     }
 
 }
