@@ -46,7 +46,6 @@ public class Main{
                     case 4:
                         id++;
                         ts.add(new Tuple("CreationOffre", Integer.toString(id)));
-                        ts.printTS();
                         System.out.println("création appel d'offre");
                         waiting = true;
                         break;

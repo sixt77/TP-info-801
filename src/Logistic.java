@@ -40,6 +40,7 @@ public class Logistic extends Thread {
                     responseStr2 = sc2.nextLine();
                     System.out.println("veuillez préciser le nombre de jours maximum pour le developpement de votre projet");
                     responseStr3 = sc3.nextLine();
+                    ts.list.clear();
                     sav = new Tuple("AppelOffre", Integer.toString(id), responseStr, responseStr2, responseStr3);
                     ts.add(sav);
                     ts.release();
@@ -73,7 +74,7 @@ public class Logistic extends Thread {
 
                     }else{
                         System.out.println("validation du choix : "+response);
-                        commande.logistics = ts.list.get(response+1);
+                        commande.logistics = ts.list.get(response);
                         ts.list.clear();
 
                         waiting = false;

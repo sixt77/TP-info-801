@@ -20,7 +20,7 @@ public class Supplier extends Thread {
                 if(tts.contains("fournisseurOffre") && !treated.contains(tts.getTupleValue("fournisseurOffre"))){
                     tuple = tts.getTuple("fournisseurOffre");
                     treated.add(tuple.value1);
-                    tts.add(new Tuple("fournisseurContreOffre", name, Integer.toString((int) (Math.random() * Integer.parseInt(tuple.value2)/3))));
+                    tts.add(new Tuple("fournisseurContreOffre", name, Integer.toString((int) (Math.random() * ((Integer.parseInt(tuple.value2)*2) - (Integer.parseInt(tuple.value2)/2))))));
                     System.out.println("réponse transmise");
 
                 }

@@ -20,7 +20,7 @@ public class Carrier extends Thread {
                 if(cs.contains("transportOffre") && !treated.contains(cs.getTupleValue("transportOffre"))){
                     tuple = cs.getTuple("transportOffre");
                     treated.add(tuple.value1);
-                    cs.add(new Tuple("transportContreOffre", name, Integer.toString((int) (Math.random() * Integer.parseInt(tuple.value2)/3))));
+                    cs.add(new Tuple("transportContreOffre", name, Integer.toString((int) (Math.random() * ((Integer.parseInt(tuple.value2)*2) - (Integer.parseInt(tuple.value2)/2))))));
                     System.out.println("réponse transmise");
 
                 }

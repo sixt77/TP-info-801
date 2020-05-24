@@ -20,7 +20,7 @@ public class Design extends Thread {
                 if(ws.contains("CostRequest") && !treated.contains(ws.getTupleValue("CostRequest"))){
                     tuple = ws.getTuple("CostRequest");
                     //System.out.println("renvoi de cost request, id :"+TupleID);
-                    ws.add("CostResponse",  Integer.toString((int) (Math.random() * Integer.parseInt(tuple.value2)/2)));
+                    ws.add("CostResponse",  Integer.toString((int) (int) (Math.random() * ((Integer.parseInt(tuple.value2)*2) - (Integer.parseInt(tuple.value2)/2)))));
                     treated.add(tuple.value1);
                 }
                 ws.release();

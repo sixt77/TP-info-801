@@ -22,7 +22,7 @@ public class Workshop extends Thread {
                 if (ws.contains("RequirementRequest") && !treated.contains(ws.getTupleValue("RequirementRequest"))) {
                     tuple = ws.getTuple("RequirementRequest");
                     //System.out.println("renvoi de Requirement, id :"+TupleID);
-                    ws.add("RequirementResponse", Integer.toString((int) (Math.random() * Integer.parseInt(tuple.value3)*Integer.parseInt(tuple.value4)*1.2)));
+                    ws.add("RequirementResponse", Integer.toString((int) (Math.random() * ((Integer.parseInt(tuple.value3)) - (Integer.parseInt(tuple.value3)/2)))));
                     treated.add(tuple.value1);
                 }
                 ws.release();
