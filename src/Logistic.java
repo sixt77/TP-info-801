@@ -31,7 +31,6 @@ public class Logistic extends Thread {
         Boolean waiting = false;
         while(1 == 1){
             if(ts.forceCapture(this.name)){
-                treated.size();
                 if(ts.contains("CreationOffre") && !treated.contains(ts.getTupleValue("CreationOffre"))){
                     TupleID = ts.getTupleValue("CreationOffre");
                     System.out.println("veuillez préciser le budget approximatif pour votre projet");
