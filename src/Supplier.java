@@ -14,14 +14,15 @@ public class Supplier extends Thread {
 
 
     public void run() {
-        String TupleID;
+        Tuple tuple;
         while(1 == 1){
             if(tts.capture(this.name)){
                 if(tts.contains("fournisseurOffre") && !treated.contains(tts.getTupleValue("fournisseurOffre"))){
-                    TupleID = tts.getTupleValue("fournisseurOffre");
-                    tts.add("transportContreOffre", name+"|"+Integer.toString((int) (Math.random() * 200)));
+                    tuple = tts.getTuple("fournisseurOffre");
+                    treated.add(tuple.value1);
+                    tts.add(new Tuple("fournisseurContreOffre", name, Integer.toString((int) (Math.random() * Integer.parseInt(tuple.value2)/3))));
                     System.out.println("réponse transmise");
-                    treated.add(TupleID);
+
                 }
                 tts.release();
             }else{

@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
-public class Logistics extends Thread {
+public class Maker extends Thread {
     String name;
     TupleSpace ts;
     TupleSpace ws;
     ArrayList<String> treated;
-    public Logistics(String name, TupleSpace ts, TupleSpace ws){
+    public Maker(String name, TupleSpace ts, TupleSpace ws){
         this.name = name;
         this.ts = ts;
         ts.addProc();
@@ -17,23 +17,23 @@ public class Logistics extends Thread {
 
 
     public void run() {
-        String TupleID;
+        Tuple tuple;
         while(1 == 1){
             if(ws.capture(this.name)){
                 if(ts.contains("AppelOffre") && !treated.contains(ts.getTupleValue("AppelOffre"))  && !ws.contains("CostRequest") && !ws.contains("RequirementRequest")){
-                    TupleID = ts.getTupleValue("AppelOffre");
-                    ws.add("CostRequest", TupleID);
-                    ws.add("RequirementRequest", TupleID);
+                    tuple = ts.getTuple("AppelOffre");
+
+                    ws.add(new Tuple("CostRequest", tuple.value1, tuple.value2, tuple.value3,tuple.value4));
+                    ws.add(new Tuple("RequirementRequest", tuple.value1, tuple.value2, tuple.value3, tuple.value4));
                     //System.out.println("Appel d'offre reçu, id :"+TupleID);
-                    treated.add(TupleID);
+                    treated.add(tuple.value1);
 
                 }
 
                 if(ws.contains("RequirementResponse") && ws.contains("CostResponse")){
                     ws.capture(this.name);
-                    if(ws.getTupleValue("RequirementResponse").equals("true")){
-                        ts.add("ContreOffre", this.name+"|"+ws.getTupleValue("RequirementResponse")+"|"+ws.getTupleValue("CostResponse"));
-                    }
+                    ts.add(new Tuple("ContreOffre", this.name, ws.getTuple("CostResponse").value1, ws.getTuple("RequirementResponse").value1));
+                    new Tuple("ContreOffre", this.name, ws.getTuple("CostResponse").value1, ws.getTuple("RequirementResponse").value1);
                     //ts.add(ws.getTupleValue("RequirementResponse"));
                     System.out.println("réponse transmise");
                     ws.list.clear();

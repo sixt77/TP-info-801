@@ -14,14 +14,16 @@ public class Carrier extends Thread {
 
 
     public void run() {
-        String TupleID;
+        Tuple tuple;
         while(1 == 1){
             if(cs.capture(this.name)){
                 if(cs.contains("transportOffre") && !treated.contains(cs.getTupleValue("transportOffre"))){
-                    TupleID = cs.getTupleValue("transportOffre");
-                    cs.add("transportContreOffre", name+"|"+Integer.toString((int) (Math.random() * 200)));
+                    tuple = cs.getTuple("transportOffre");
+                    treated.add(tuple.value1);
+                    tuple.printTuple();
+                    cs.add(new Tuple("transportContreOffre", name, Integer.toString((int) (Math.random() * Integer.parseInt(tuple.value2)/3))));
                     System.out.println("réponse transmise");
-                    treated.add(TupleID);
+
                 }
                 cs.release();
             }else{

@@ -8,9 +8,9 @@ public class Ticket {
         this.transport = null;
     }
     public void print(){
-        System.out.println("commande effectuer par "+logistics.value);
-        System.out.println("commande fourni par "+supplier.value);
-        System.out.println("commande transporter par "+transport.value);
+        System.out.println("commande effectuer par "+logistics.value1);
+        System.out.println("commande fourni par "+supplier.value1);
+        System.out.println("commande transporter par "+transport.value1);
     }
 
 }

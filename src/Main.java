@@ -1,19 +1,18 @@
 import java.util.Scanner;
 public class Main{
     public static void main(String a[]){
-        int id = 1;
+        int id = 0;
         boolean waiting = false;
         boolean out = false;
         TupleSpace ts = new TupleSpace();
         TupleSpace tt = new TupleSpace();
         TupleSpace cs = new TupleSpace();
         Scanner sc1 = new Scanner(System.in);
-        Scanner sc2 = new Scanner(System.in);
-        Scanner sc3 = new Scanner(System.in);
         Scanner sc4 = new Scanner(System.in);
         Scanner sc5 = new Scanner(System.in);
         Scanner sc6 = new Scanner(System.in);
-        Ticket commande = new Ticket();
+        Logistic l = new Logistic("logistic1", ts, tt, cs);
+        l.start();
         int response;
         String responseStr;
         while(!out){
@@ -25,7 +24,7 @@ public class Main{
                         TupleSpace fs = new TupleSpace();
                         System.out.println("veuillez entrer un nom de fabricant");
                         responseStr = sc4.nextLine();
-                        Logistics f = new Logistics(responseStr, ts, fs);
+                        Maker f = new Maker(responseStr, ts, fs);
                         Design d = new Design(responseStr+"-Design", fs);
                         Workshop w = new Workshop(responseStr+"-Workshop", fs, 1);
                         f.start();
@@ -46,7 +45,8 @@ public class Main{
                         break;
                     case 4:
                         id++;
-                        ts.add("AppelOffre", Integer.toString(id));
+                        ts.add(new Tuple("CreationOffre", Integer.toString(id)));
+                        ts.printTS();
                         System.out.println("création appel d'offre");
                         waiting = true;
                         break;
@@ -58,46 +58,13 @@ public class Main{
                         System.out.println("choix non répertoirié");
                 }
             }else{
-                System.out.println("en attente de réponses, appuyer sur S pour stopper la recherche");
-                while(!sc2.nextLine().equals("S")){
-
+                if(ts.capture("main")){
+                    if(ts.contains("FinOffre")){
+                        waiting = false;
+                        ts.list.clear();
+                    }
+                    ts.release();
                 }
-                ts.capture("main");
-                ts.printTSasList();
-                System.out.println("selectionnez le numéro de la proposition choisit (O) pour relancer l'offre");
-                response = sc3.nextInt();
-                while(response < 0 || response > ts.list.size()-1){
-                    System.out.println("erreur selection impossible");
-                    System.out.println("selectionnez le numéro de la proposition choisit");
-                    response = sc3.nextInt();
-                }
-
-                if(response == 0){
-                    ts.list.clear();
-                    id++;
-                    ts.add("AppelOffre", Integer.toString(id));
-                    System.out.println("relance appel d'offre");
-
-                }else{
-                    System.out.println("validation du choix : "+response);
-                    commande.logistics = ts.list.get(response);
-                    ts.list.clear();
-
-                    waiting = false;
-                    //gestion fournisseur
-                    System.out.println("choix du fournisseur");
-                    Tuple supplierTuple = tt.sendMessage("fournisseurOffre", "1");
-                    System.out.println(supplierTuple.value);
-                    commande.supplier = supplierTuple;
-                    //gestion transporteur
-                    System.out.println("choix du transporteur");
-                    Tuple transportTuple = cs.sendMessage("transportOffre", "1");
-                    System.out.println(transportTuple.value);
-                    commande.transport = transportTuple;
-                    commande.print();
-                }
-                ts.release();
-
 
             }
         }

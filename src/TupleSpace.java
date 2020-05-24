@@ -34,16 +34,26 @@ public class TupleSpace {
     }
     public boolean contains(String name){
         boolean find = false;
-        for(int i = 0; i < this.list.size(); i++){
-            if(this.list.get(i).name.equals(name))find = true;
+        if(!this.list.isEmpty()){
+            for(int i = 0; i < this.list.size(); i++){
+                if(this.list.get(i).name.equals(name))find = true;
+            }
         }
+
         return find;
     }
 
     public String getTupleValue(String name){
         String result = "";
         for(Tuple elt : this.list){
-            if(elt.name.equals(name))result = elt.value;
+            if(elt.name.equals(name))result = elt.value1;
+        }
+        return result;
+    }
+    public Tuple getTuple(String name){
+        Tuple result = null;
+        for(Tuple elt : this.list){
+            if(elt.name.equals(name))result = elt;
         }
         return result;
     }
@@ -65,21 +75,39 @@ public class TupleSpace {
         }else{
             return false;
         }
-
+    }
+    public synchronized boolean forceCapture(String name){
+        if(this.free){
+            this.free = false;
+            this.lastProc = name;
+            return true;
+        }else{
+            return false;
+        }
     }
     public synchronized void release(){
         this.free = true;
     }
     public void printTS(){
         this.list.stream().forEach(elt-> {
-            System.out.println("nom : "+elt.name+", value : "+elt.value);
+            System.out.println("nom : "+elt.name+", value : "+elt.value1);
         });
     }
     public void printTSasList(){
         int j = 0;
         for(int i = 0; i < this.list.size(); i++){
-            if(!this.list.get(i).name.equals("AppelOffre") && !this.list.get(i).name.equals("fournisseurOffre") && !this.list.get(i).name.equals("transportOffre")){
-                System.out.println((j+1)+" : "+this.list.get(i).value);
+            if(!this.list.get(i).name.equals("AppelOffre") && !this.list.get(i).name.equals("fournisseurOffre") && !this.list.get(i).name.equals("transportOffre") && !this.list.get(i).name.equals("CreationOffre")){
+                System.out.println((j+1)+" : "+this.list.get(i).value1);
+                j++;
+            }
+
+        }
+    }
+    public void printTSasPriceList(){
+        int j = 0;
+        for(int i = 0; i < this.list.size(); i++){
+            if(!this.list.get(i).name.equals("AppelOffre") && !this.list.get(i).name.equals("fournisseurOffre") && !this.list.get(i).name.equals("transportOffre") && !this.list.get(i).name.equals("CreationOffre")){
+                System.out.println((j+1)+" -> prix : "+this.list.get(i).value2+", nombre de prototype dans les delai : "+this.list.get(i).value3);
                 j++;
             }
 
@@ -88,20 +116,44 @@ public class TupleSpace {
     public void addProc(){
         this.nbProc++;
     }
-
     public Tuple sendMessage(String str1, String str2){
+        Tuple test = new Tuple("", "");
         Scanner sc1 = new Scanner(System.in);
         this.add(new Tuple(str1, str2));
+        System.out.println("en attente de réponses, appuyer sur S pour stopper la recherche");
+        System.out.print("prise de l'espace de tuple.");
+        while(!sc1.nextLine().equals("S")){
+            System.out.print(".");
+        }
+        this.capture("main");
+        this.printTSasList();
+        test = this.safeGet();
+        this.list.clear();
+        this.release();
+        return test;
+    }
+
+    public Tuple sendMessage(Tuple tuple){
+        Scanner sc1 = new Scanner(System.in);
+        this.add(tuple);
         System.out.println("en attente de réponses, appuyer sur S pour stopper la recherche");
         while(!sc1.nextLine().equals("S")){
 
         }
-        this.capture("main");
+        System.out.println("prise de l'espace de tuple.");
+        while(!this.forceCapture("logistics")) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         this.printTSasList();
-        Tuple sav = this.safeGet();
+        tuple = this.safeGet();
         this.list.clear();
         this.release();
-        return sav;
+        return tuple;
+
     }
     public Tuple safeGet(){
         Scanner sc1 = new Scanner(System.in);

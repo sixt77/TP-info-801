@@ -14,14 +14,14 @@ public class Design extends Thread {
 
 
     public void run() {
-        String TupleID;
+        Tuple tuple;
         while(1 == 1){
             if(ws.capture(this.name)){
                 if(ws.contains("CostRequest") && !treated.contains(ws.getTupleValue("CostRequest"))){
-                    TupleID = ws.getTupleValue("CostRequest");
+                    tuple = ws.getTuple("CostRequest");
                     //System.out.println("renvoi de cost request, id :"+TupleID);
-                    ws.add("CostResponse",  Integer.toString((int) (Math.random() * 200)));
-                    treated.add(TupleID);
+                    ws.add("CostResponse",  Integer.toString((int) (Math.random() * Integer.parseInt(tuple.value2)/2)));
+                    treated.add(tuple.value1);
                 }
                 ws.release();
             }else{
