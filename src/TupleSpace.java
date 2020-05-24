@@ -97,7 +97,7 @@ public class TupleSpace {
         int j = 0;
         for(int i = 0; i < this.list.size(); i++){
             if(!this.list.get(i).name.equals("AppelOffre") && !this.list.get(i).name.equals("fournisseurOffre") && !this.list.get(i).name.equals("transportOffre") && !this.list.get(i).name.equals("CreationOffre")){
-                System.out.println((j+1)+" : "+this.list.get(i).value1);
+                System.out.println((j+1)+" : colis transporté par "+this.list.get(i).value1+", pour un prix de : "+this.list.get(i).value2);
                 j++;
             }
 

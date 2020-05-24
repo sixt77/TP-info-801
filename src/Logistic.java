@@ -34,9 +34,9 @@ public class Logistic extends Thread {
                 treated.size();
                 if(ts.contains("CreationOffre") && !treated.contains(ts.getTupleValue("CreationOffre"))){
                     TupleID = ts.getTupleValue("CreationOffre");
-                    System.out.println("veuillez préciser le prix maximum pour votre projet");
+                    System.out.println("veuillez préciser le budget approximatif pour votre projet");
                     responseStr = sc1.nextLine();
-                    System.out.println("veuillez préciser la quantité dans laquelle sera produite votre projet");
+                    System.out.println("veuillez préciser la quantité souhaité dans laquelle sera produite votre projet");
                     responseStr2 = sc2.nextLine();
                     System.out.println("veuillez préciser le nombre de jours maximum pour le developpement de votre projet");
                     responseStr3 = sc3.nextLine();
@@ -73,7 +73,7 @@ public class Logistic extends Thread {
 
                     }else{
                         System.out.println("validation du choix : "+response);
-                        commande.logistics = ts.list.get(response);
+                        commande.logistics = ts.list.get(response+1);
                         ts.list.clear();
 
                         waiting = false;
